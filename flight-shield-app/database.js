@@ -4,6 +4,7 @@ var config = {
     user: process.env.DB_USER,
     database: process.env.DB_NAME,
     password: process.env.DB_PASS,
+    multipleStatements: true
 };
 
 // Later on when running from Google Cloud, env variables will be passed in container cloud connection config

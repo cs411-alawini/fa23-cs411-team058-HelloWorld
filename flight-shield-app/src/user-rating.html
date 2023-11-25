@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simple Form</title>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+
+<form method="POST" action="/user-rating-trigger">
+  <label for="username">Username:</label>
+  <input type="text" id="username" name="username" required>
+
+  <label for="airline-code">Airline Code:</label>
+  <input type="text" id="iata_code" name="iata_code" pattern="[A-Za-z0-9]{2,}" title="Airline code should be at least 2 characters long and contain only letters and numbers." required>
+
+  <label for="rating">Rating (0-10):</label>
+  <input type="number" id="rating" name="rating" min="0" max="10" required>
+
+  <input type="submit" value="Submit">
+</form>
+
+<br><br><br>
+
+<form method="POST" action="/update-rating">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required>
+  
+    <label for="airline-code">Airline Code:</label>
+    <input type="text" id="iata_code" name="iata_code" pattern="[A-Za-z0-9]{2,}" title="Airline code should be at least 2 characters long and contain only letters and numbers." required>
+  
+    <label for="rating">Rating (0-10):</label>
+    <input type="number" id="rating" name="rating" min="0" max="10" required>
+  
+    <input type="submit" value="UPDATE">
+</form>
+
+<br><br><br>
+
+<form method="POST" action="/delete-rating">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required>
+  
+    <label for="airline-code">Airline Code:</label>
+    <input type="text" id="iata_code" name="iata_code" pattern="[A-Za-z0-9]{2,}" title="Airline code should be at least 2 characters long and contain only letters and numbers." required>
+  
+    <input type="submit" value="Delete">
+</form>
+
+
+
+<script>
+    // Replace '<USERNAME>' with the actual username you want to fetch ratings for
+    const username = 'aruna';
+
+    $(document).ready(function () {
+        $.ajax({
+            type: 'GET',
+            url: `/rating/${username}`,
+            success: function (data) {
+                console.log('Data received:', data);
+                // Handle the data as needed
+                const rating = data[0].rating;
+                console.log(rating);
+                $('#rating').val(rating);
+                $('#iata_code').val(data[0].IATA_CODE);
+                $('#username').val(data[0].username);
+            },
+            error: function (error) {
+                console.error('Error fetching data:', error);
+            }
+        });
+    });
+
+</script>
+
+</body>
+</html>
