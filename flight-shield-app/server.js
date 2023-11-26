@@ -3,17 +3,60 @@ require('dotenv').config()
 const express = require('express');
 const connection = require('./database');
 const path = require('path');
+const bodyParser = require('body-parser');
 
 const app = express();
 
-app.use(express.urlencoded({extended: true}));
+// app.use(express.urlencoded({extended: true}));
+app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-  res.send('Hello from App Engine! Try: /airlines');
+  res.sendFile(path.join(__dirname, '/src/login.html'));
+});
+
+app.get('/signup', (req, res) => {
+    res.sendFile(path.join(__dirname, '/src/signup.html'));
+});
+
+app.get('/homepage', (req, res) => {
+    res.sendFile(path.join(__dirname, '/src/homepage.html'));
 });
 
 app.get('/submit', (req, res) => {
   res.sendFile(path.join(__dirname, '/src/form.html'));
+});
+
+app.post('/login', (req, res) => {
+    connection.query(
+      "SELECT * FROM `users` WHERE username = ? AND pass = ?;",
+      [req.body.username, req.body.password],
+      (error, results, fields) => {
+        if (error) {
+            console.error('Database query error:', error);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+        // Check if a matching user was found
+        if (results.length > 0) {
+            // User authenticated successfully
+            return res.status(200).json({ message: 'Login successful' });
+        } else {
+            // No matching user found
+            return res.status(401).json({ error: 'Invalid username or password' });
+        }
+      }
+    );
+});
+
+app.post('/add-user', (req, res) => {
+    console.log(req.body);
+    connection.query(
+      "INSERT INTO users (username, pass) VALUES (?, ?);",
+      [req.body.username, req.body.password],
+      (error, results, fields) => {
+        if(error) throw error;
+        res.json(results);
+      }
+    );
 });
 
 app.post('/submit', (req, res) => {
@@ -86,7 +129,10 @@ app.post('/test2', async (req, res) => {
       );
 });
 
-app.post('/test3', async (req, res) => {
+app.post('/risk-analysis', async (req, res) => {
+    
+    console.log(req.body);
+    
     // {"fieldCount":0,"affectedRows":0,"insertId":0,"serverStatus":2,"warningCount":0,"message":"","protocol41":true,"changedRows":0} is in index 1
     connection.query(
         "CALL GetAvgDelayWithRisk('"+ req.body.origin + "', '" + req.body.destination + "', '" + req.body.date + "');",

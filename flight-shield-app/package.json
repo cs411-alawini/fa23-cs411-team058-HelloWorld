@@ -4,13 +4,13 @@
     "description": "Flight Shield application",
     "main": "server.js",
     "scripts": {
-      "start": "node server.js",
-      "deploy": "gcloud app deploy"
+        "start": "node server.js",
+        "deploy": "gcloud app deploy"
     },
     "dependencies": {
-      "dotenv": "^16.3.1",
-      "express": "^4.18.2",
-      "mysql": "^2.18.1"
+        "body-parser": "^1.20.2",
+        "dotenv": "^16.3.1",
+        "express": "^4.18.2",
+        "mysql": "^2.18.1"
     }
-  }
-  
+}

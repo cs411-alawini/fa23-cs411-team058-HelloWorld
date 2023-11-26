@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FlightShield</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        
+        header {
+            background-color: #000;
+            color: #fff;
+        }
+        
+        nav {
+            float: right;
+        }
+        
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 0 10px;
+        }
+        
+        main {
+            padding: 20px;
+        }
+        
+        section {
+            margin-bottom: 20px;
+        }
+        
+        h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .flight-insurance-form {
+            width: 500px;
+            margin: 0 auto;
+        }
+        
+        .flight-insurance-form select {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        
+        .flight-insurance-form input {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        
+        .flight-insurance-results {
+            width: 500px;
+            margin: 0 auto;
+        }
+        
+        .flight-schedule {
+            float: left;
+            width: 50%;
+        }
+        
+        .risk-meter {
+            float: right;
+            width: 50%;
+        }
+        
+        .progress-bar {
+            border: 1px solid #ccc;
+            height: 20px;
+        }
+        
+        .progress-bar-fill {
+            background-color: green;
+            height: 20px;
+        }
+        
+        .risk-meter p {
+            margin-bottom: 10px;
+        }
+        
+        footer {
+            text-align: center;
+        }
+        
+        footer p {
+            color: #fff;
+            background-color: #000;
+            padding: 10px;
+        }
+        
+        .risk-level {
+            counter-reset: step-counter;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .risk-level > li {
+            display: inline-block;
+            overflow: hidden;
+            width: 50px;
+            height: 50px;
+            border-radius: 3px;
+            text-align: center;
+            line-height: 50px;
+            vertical-align: middle;
+        }
+        
+        .risk-level > li::before {
+            content: counter(step-counter);
+            counter-increment: step-counter;
+            display: block;
+            color: rgba(255, 255, 255, 0.5);
+            font-family: 'Trebuchet MS', Arial, sans-serif;
+            font-size: 28px;
+        }
+        
+        .risk-level > li.isActive {
+            width: 75px;
+            height: 75px;
+            line-height: 75px;
+        }
+        
+        .risk-level > li.isActive::before {
+            color: rgba(255, 255, 255, 1);
+            font-size: 42px;
+        }
+        
+        .risk-level > li:nth-child(1) {
+            background: #009642;
+        }
+        
+        .risk-level > li:nth-child(2) {
+            background: #5f9600;
+        }
+        
+        .risk-level > li:nth-child(3) {
+            background: #afc611;
+        }
+        
+        .risk-level > li:nth-child(4) {
+            background: #f4db0a;
+        }
+        
+        .risk-level > li:nth-child(5) {
+            background: #f4af0a;
+        }
+        
+        .risk-level > li:nth-child(6) {
+            background: #e74404;
+        }
+        
+        .risk-level > li:nth-child(7) {
+            background: #b20811;
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <header>
+        <h1>FLIGHTSHIELD</h1>
+        <nav>
+            <a href="#">HOME</a>
+            <a href="#">ABOUT</a>
+            <a href="#">INSIGHT</a>
+            <input type="text" placeholder="Keyword Search">
+        </nav>
+    </header>
+    <main>
+        <section id="flight-insurance">
+            <h2>CHECK IF YOU NEED COVERAGE FOR YOUR FLIGHT TODAY!</h2>
+            <div class="flight-insurance-form">
+                <!-- <select name="trip-type">
+                    <option value="single-trip">SINGLE TRIP</option>
+                    <option value="round-trip">ROUND TRIP</option>
+                </select> -->
+                <input type="text" id="origin" name="origin" placeholder="ORIGIN">
+                <input type="text" id="destination" name="destination" placeholder="DESTINATION">
+                <input type="text" id="date" name="date" placeholder="DEPART">
+                <!-- <input type="date" name="return" placeholder="RETURN"> -->
+                <button id="predict" onclick="onPredictClick()">PREDICT</button>
+            </div>
+        </section>
+        <div id="risk-meter-div">
+            <ol class="risk-level">
+                <li id="L1">L1</li>
+                <li id="L2">L2</li>
+                <li id="L3">L3</li>
+                <li id="L4">L4</li>
+                <li id="L5">L5</li>
+                <li id="L6">L6</li>
+                <li id="L7">L7</li>
+            </ol>
+        </div>
+    </main>
+    <footer>
+        <p>Copyright &copy; 2023 FlightShield</p>
+    </footer>
+    
+    <script>
+        
+        function onPredictClick() {
+            const origin = document.getElementById('origin').value;
+            const destination = document.getElementById('destination').value;
+            const date = document.getElementById('date').value;
+            
+            const formData = { origin, destination, date };
+            console.log(formData);
+            
+            // You should replace the following URL with your actual authentication endpoint
+            const endpoint = '/risk-analysis';
+            
+            fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Database fetch failed');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                
+                // Update the risk meter and display the results
+                // const riskmeterdiv = document.getElementById('risk-meter-div');
+                // riskmeterdiv.innerHTML = JSON.stringify(data[0]);
+                
+                const riskMeterLevel = data[0][0].Risk_Level
+                document.getElementById('L1').classList.remove('isActive');
+                document.getElementById('L2').classList.remove('isActive');
+                document.getElementById('L3').classList.remove('isActive');
+                document.getElementById('L4').classList.remove('isActive');
+                document.getElementById('L5').classList.remove('isActive');
+                document.getElementById('L6').classList.remove('isActive');
+                document.getElementById('L7').classList.remove('isActive');
+
+                console.log(riskMeterLevel);
+
+                var listItem = document.getElementById(riskMeterLevel);
+                listItem.classList.add('isActive');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
