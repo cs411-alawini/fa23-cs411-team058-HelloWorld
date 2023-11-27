@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>FlightShield</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         body {
-    font-family: sans-serif;
+            font-family: sans-serif;
         }
 
         header {
@@ -12,22 +14,15 @@
             color: #fff;
         }
 
-     
 
-        nav a {
-            color: black;
-            text-decoration: none;
-            padding: 0 10px;
-        }
-        
         main {
             padding: 20px;
         }
-        
+
         section {
             margin-bottom: 20px;
         }
-        
+
         h2 {
             font-size: 22px;
             margin-bottom: 10px;
@@ -47,9 +42,8 @@
             margin: 0 10px;
         }
 
-        .flight-insurance-form input, .flight-insurance-form button {
-            
-        }
+        .flight-insurance-form input,
+        .flight-insurance-form button {}
 
         .flight-insurance-form input {
             border: none;
@@ -71,56 +65,59 @@
             color: #333;
             text-transform: uppercase;
         }
+
         .flight-schedule {
             float: left;
             width: 50%;
         }
-        
+
         .risk-meter {
             float: right;
             width: 50%;
         }
 
         .risk-meter-container {
-    background-color: #d1c8c1;
-    padding: 30px;
-    margin: 0 auto;
-    width: 30%; /* Adjust width as needed */
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow */
-}
-        
+            background-color: #d1c8c1;
+            padding: 30px;
+            margin: 0 auto;
+            width: 30%;
+            /* Adjust width as needed */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            /* Optional: Adds a subtle shadow */
+        }
+
         .progress-bar {
             border: 1px solid #ccc;
             height: 20px;
         }
-        
+
         .progress-bar-fill {
             background-color: green;
             height: 20px;
         }
-        
+
         .risk-meter p {
             margin-bottom: 10px;
         }
-        
+
         footer {
             text-align: center;
         }
-        
+
         footer p {
             color: #fff;
             background-color: #000;
             padding: 10px;
         }
-        
+
         .risk-level {
             counter-reset: step-counter;
             margin: 0;
             padding: 0;
         }
-        
-        .risk-level > li {
+
+        .risk-level>li {
             display: inline-block;
             overflow: hidden;
             width: 50px;
@@ -130,8 +127,8 @@
             line-height: 50px;
             vertical-align: middle;
         }
-        
-        .risk-level > li::before {
+
+        .risk-level>li::before {
             content: counter(step-counter);
             counter-increment: step-counter;
             display: block;
@@ -139,103 +136,108 @@
             font-family: 'Trebuchet MS', Arial, sans-serif;
             font-size: 28px;
         }
-        
-        .risk-level > li.isActive {
+
+        .risk-level>li.isActive {
             width: 75px;
             height: 75px;
             line-height: 75px;
         }
-        
-        .risk-level > li.isActive::before {
+
+        .risk-level>li.isActive::before {
             color: rgba(255, 255, 255, 1);
             font-size: 42px;
         }
-        
-        .risk-level > li:nth-child(1) {
+
+        .risk-level>li:nth-child(1) {
             background: #009642;
         }
-        
-        .risk-level > li:nth-child(2) {
+
+        .risk-level>li:nth-child(2) {
             background: #5f9600;
         }
-        
-        .risk-level > li:nth-child(3) {
+
+        .risk-level>li:nth-child(3) {
             background: #afc611;
         }
-        
-        .risk-level > li:nth-child(4) {
+
+        .risk-level>li:nth-child(4) {
             background: #f4db0a;
         }
-        
-        .risk-level > li:nth-child(5) {
+
+        .risk-level>li:nth-child(5) {
             background: #f4af0a;
         }
-        
-        .risk-level > li:nth-child(6) {
+
+        .risk-level>li:nth-child(6) {
             background: #e74404;
         }
-        
-        .risk-level > li:nth-child(7) {
+
+        .risk-level>li:nth-child(7) {
             background: #b20811;
         }
 
         header {
-    background: #ffffff; /* Replace with the actual color of your navbar */
-    text-align: center;
-    padding: 10px 0;
-}
+            background: #ffffff;
+            /* Replace with the actual color of your navbar */
+            padding: 10px 0;
+        }
 
-nav {
-    display: inline-block;
-}
+        nav {
+            display: inline-block;
+        }
 
-nav #logo {
-    font-size: 24px; /* Adjust the size as needed */
-    margin-right: 20px;
-    font-weight: bold;
-    display: inline;
-    margin-right: 20px; 
-}
+        nav #logo {
+            font-size: 24px;
+            /* Adjust the size as needed */
+            margin-right: 20px;
+            font-weight: bold;
+            display: inline;
+            margin-right: 20px;
+        }
 
-nav a {
-    margin: 0 15px;
-    color: #000000; /* Replace with the actual color of your links */
-    text-decoration: none;
-    font-size: 18px; /* Adjust the size as needed */
-    position: relative;
-}
+        nav a {
+            margin: 0 15px;
+            color: #000000;
+            /* Replace with the actual color of your links */
+            text-decoration: none;
+            font-size: 18px;
+            /* Adjust the size as needed */
+            position: relative;
+        }
 
 
 
-/* Additional styles for the hover effect and other states if necessary */
-nav a:hover {
-    color: #cccccc; /* Replace with the color for hover state */
-}
-
-        
-        
+        /* Additional styles for the hover effect and other states if necessary */
+        nav a:hover {
+            color: #cccccc;
+            /* Replace with the color for hover state */
+        }
     </style>
 </head>
+
 <body>
     <header>
-        
+
         <nav>
-            <div id="logo" style="color:#704638; left: 0; font-size: 20px;">FLIGHTSHIELD</div>
+            <span style="padding-right: 500px; padding-left: 150px;">
+                <i class="fa fa-plane" style="font-size:34px; color:#2e2d2d; margin-left: 0px;margin-right: 10px;"></i><div id="logo" style="color:#704638; left: 0; font-size: 20px; ">FLIGHTSHIELD</div>
+            </span>
             <a href="#" style="color: #9c7351;"><b>HOME</b></a>
             <a href="#">ABOUT</a>
             <a href="#">INSIGHT</a>
             <input type="text" placeholder="Keyword Search">
         </nav>
- 
-    </header>
 
+    </header>
+    <hr>
     <main>
 
-        <hr>
+        
         <section id="flight-insurance">
             <br><br>
 
-            <h2 style="text-align: center;  font-size:18 ; color:#704638;">CHECK IF YOU NEED COVERAGE FOR YOUR FLIGHT TODAY!</h2>
+            <h2 style="text-align: center;  font-size:18 ; color:#704638;">CHECK IF YOU NEED COVERAGE FOR YOUR FLIGHT
+                TODAY!</h2>
             <br>
             <div class="flight-insurance-form">
                 <div class="input-container">
@@ -250,43 +252,45 @@ nav a:hover {
                     <div class="input-title" style="font-size: medium;"><b>Depart</b></div>
                     <input type="text" id="date" name="date" placeholder="DEPART">
                 </div>
-                <button id="predict" onclick="onPredictClick()" style="margin: 10px; padding: 18px; font-size: medium;">PREDICT</button>
+                <button id="predict" onclick="onPredictClick()"
+                    style="margin: 10px; padding: 18px; font-size: medium;">PREDICT</button>
             </div>
         </section>
         <br><br>
         <div class="risk-meter-container">
-        <h2 style="text-align: center;  font-size:18 ; color:#704638;">Flight Schedule Risk Meter</h2>
-        <br><br>
-        <div id="risk-meter-div" style="text-align: center;">
-            <ol class="risk-level">
-                <li id="L1">L1</li>
-                <li id="L2">L2</li>
-                <li id="L3">L3</li>
-                <li id="L4">L4</li>
-                <li id="L5">L5</li>
-                <li id="L6">L6</li>
-                <li id="L7">L7</li>
-            </ol>
+            <h2 style="text-align: center;  font-size:18 ; color:#704638;">Flight Schedule Risk Meter</h2>
+            <br><br>
+            <div id="risk-meter-div" style="text-align: center;">
+                <ol class="risk-level">
+                    <li id="L1">L1</li>
+                    <li id="L2">L2</li>
+                    <li id="L3">L3</li>
+                    <li id="L4">L4</li>
+                    <li id="L5">L5</li>
+                    <li id="L6">L6</li>
+                    <li id="L7">L7</li>
+                </ol>
+            </div>
         </div>
-    </div>
-    <br>
-    <h3 style="text-align: center;  font-size:18 ; color:#704638;">Don’t want to purchase insurance? Checkout our insights section!</h3>
+        <br>
+        <h3 style="text-align: center;  font-size:18 ; color:#704638;">Don’t want to purchase insurance? Checkout our
+            insights section!</h3>
     </main>
-   
-    
+
+
     <script>
-        
+
         function onPredictClick() {
             const origin = document.getElementById('origin').value;
             const destination = document.getElementById('destination').value;
             const date = document.getElementById('date').value;
-            
+
             const formData = { origin, destination, date };
             console.log(formData);
-            
+
             // You should replace the following URL with your actual authentication endpoint
             const endpoint = '/risk-analysis';
-            
+
             fetch(endpoint, {
                 method: 'POST',
                 headers: {
@@ -294,37 +298,38 @@ nav a:hover {
                 },
                 body: JSON.stringify(formData),
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Database fetch failed');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log(data);
-                
-                // Update the risk meter and display the results
-                // const riskmeterdiv = document.getElementById('risk-meter-div');
-                // riskmeterdiv.innerHTML = JSON.stringify(data[0]);
-                
-                const riskMeterLevel = data[0][0].Risk_Level
-                document.getElementById('L1').classList.remove('isActive');
-                document.getElementById('L2').classList.remove('isActive');
-                document.getElementById('L3').classList.remove('isActive');
-                document.getElementById('L4').classList.remove('isActive');
-                document.getElementById('L5').classList.remove('isActive');
-                document.getElementById('L6').classList.remove('isActive');
-                document.getElementById('L7').classList.remove('isActive');
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Database fetch failed');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
 
-                console.log(riskMeterLevel);
+                    // Update the risk meter and display the results
+                    // const riskmeterdiv = document.getElementById('risk-meter-div');
+                    // riskmeterdiv.innerHTML = JSON.stringify(data[0]);
 
-                var listItem = document.getElementById(riskMeterLevel);
-                listItem.classList.add('isActive');
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+                    const riskMeterLevel = data[0][0].Risk_Level
+                    document.getElementById('L1').classList.remove('isActive');
+                    document.getElementById('L2').classList.remove('isActive');
+                    document.getElementById('L3').classList.remove('isActive');
+                    document.getElementById('L4').classList.remove('isActive');
+                    document.getElementById('L5').classList.remove('isActive');
+                    document.getElementById('L6').classList.remove('isActive');
+                    document.getElementById('L7').classList.remove('isActive');
+
+                    console.log(riskMeterLevel);
+
+                    var listItem = document.getElementById(riskMeterLevel);
+                    listItem.classList.add('isActive');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         }
     </script>
 </body>
+
 </html>
