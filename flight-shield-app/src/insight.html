@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Insight Page</title>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+
+<h1>FLIGHTSHIELD</h1>
+<h2>DON'T WANT TO PURCHASE INSURANCE?</h2>
+<p>NO PROBLEM, SELECT AN AIRLINE THAT HAS THE BEST ON-TIME PERFORMANCE BASED ON OUR ANALYSIS!</p>
+
+<div id="on-time-performance">
+    <h3>ON-TIME PERFORMANCE</h3>
+    <!-- The pie chart will be dynamically inserted here -->
+</div>
+
+<div id="reliability-ratings">
+    <h3>RELIABILITY RATINGS BASED ON YOUR SEARCH</h3>
+    <!-- The reliability ratings will be dynamically inserted here -->
+</div>
+
+<script>
+$(document).ready(function () {
+    // Fetch on-time performance data
+    $.ajax({
+        type: 'GET',
+        url: '/api/on-time-performance',
+        success: function (data) {
+            // Assuming data is an array of { airline: "Airline Name", percentage: 50 }
+            // You would create a pie chart here using a library like Chart.js
+            // For now, let's just append the data as text
+            data.forEach(function (item) {
+                $('#on-time-performance').append(`<p>${item.airline}: ${item.percentage}%</p>`);
+            });
+        },
+        error: function (error) {
+            console.error('Error fetching on-time performance data:', error);
+        }
+    });
+
+    // Fetch reliability ratings data
+    $.ajax({
+        type: 'GET',
+        url: '/api/reliability-ratings',
+        success: function (data) {
+            // Assuming data is an array of { airline: "Airline Name", rating: 90 }
+            // You would create rating visuals here
+            // For now, let's just append the data as text
+            data.forEach(function (item) {
+                $('#reliability-ratings').append(`<p>${item.airline}: ${item.rating}%</p>`);
+            });
+        },
+        error: function (error) {
+            console.error('Error fetching reliability ratings data:', error);
+        }
+    });
+});
+</script>
+
+</body>
+</html>
