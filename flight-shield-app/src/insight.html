@@ -1,64 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Insight Page</title>
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlightShield Insights</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        
+        .rating-circle {
+            font-size: 32px; /* size of the circle */
+            border-radius: 50%;
+            width: 100px; /* size of the circle */
+            height: 100px; /* size of the circle */
+            line-height: 100px; /* center text vertically */
+            text-align: center;
+            margin: 10px auto;
+            position: relative;
+        }
+
+        .rating-circle:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%; 
+            height: 100%;
+            border-radius: 50%;
+            background: gray;
+            z-index: -1;
+        }
+
+        .rating-circle span {
+            display: block;
+            z-index: 10;
+        }
+
+        .high {
+            color: #ff6f31;
+        }
+        
+        .medium {
+            color: #ffd31d;
+        }
+
+        .high:before {
+            background: #ff6f31;
+        }
+        
+        .medium:before {
+            background: #ffd31d;
+        }
+        
+    </style>
 </head>
 <body>
+    <!-- Existing header with navigation -->
 
-<h1>FLIGHTSHIELD</h1>
-<h2>DON'T WANT TO PURCHASE INSURANCE?</h2>
-<p>NO PROBLEM, SELECT AN AIRLINE THAT HAS THE BEST ON-TIME PERFORMANCE BASED ON OUR ANALYSIS!</p>
+    <main>
+        <!-- Static pie chart section -->
+        <section>
+            <h2>ON-TIME PERFORMANCE</h2>
+            <!-- Placeholder pie chart using inline SVG -->
+            <svg height="200" width="200" viewbox="0 0 32 32">
+                <circle r="16" cx="16" cy="16" fill="#8d6e63" />
+                <circle r="16" cx="16" cy="16" fill="#78909c" stroke-dasharray="20 100" stroke-dashoffset="25" />
+                <circle r="16" cx="16" cy="16" fill="#fff59d" stroke-dasharray="15 100" stroke-dashoffset="-15" />
+                
+            </svg>
+            <ul>
+                <li>JET BLUE - 38.5%</li>
+                <li>United Airlines - 23.1%</li>
+                <li>Delta Airlines - 15.4%</li>
+                <li>Southwest Airlines - 15.4%</li>
+                <li>American Airlines - 7.7%</li>
+            </ul>
+        </section>
 
-<div id="on-time-performance">
-    <h3>ON-TIME PERFORMANCE</h3>
-    <!-- The pie chart will be dynamically inserted here -->
-</div>
+        <!-- Dynamic reliability ratings section -->
+        <section>
+            <h2>RELIABILITY RATINGS BASED ON YOUR SEARCH</h2>
+            <div id="reliability-ratings">
+                <!-- Placeholder for dynamic content -->
+                <!-- Example static content for layout  -->
+                <div class="rating-circle high"><span>90%</span></div>
+                <div class="rating-circle medium"><span>75%</span></div>
+                <p>SOUTHWEST AIRLINES</p>
+                <p>JET BLUE</p>
+            </div>
+        </section>
+    </main>
 
-<div id="reliability-ratings">
-    <h3>RELIABILITY RATINGS BASED ON YOUR SEARCH</h3>
-    <!-- The reliability ratings will be dynamically inserted here -->
-</div>
-
-<script>
-$(document).ready(function () {
-    // Fetch on-time performance data
-    $.ajax({
-        type: 'GET',
-        url: '/api/on-time-performance',
-        success: function (data) {
-            // Assuming data is an array of { airline: "Airline Name", percentage: 50 }
-            // You would create a pie chart here using a library like Chart.js
-            // For now, let's just append the data as text
-            data.forEach(function (item) {
-                $('#on-time-performance').append(`<p>${item.airline}: ${item.percentage}%</p>`);
+    <script>
+        // Fetch reliability ratings from API
+        $(document).ready(function() {
+            $.ajax({
+                url: '/api/reliability-ratings',
+                method: 'GET',
+                success: function(data) {
+                    // Clear existing content
+                    $('#reliability-ratings').empty();
+                    
+                    // Add new content
+                    data.forEach(function(item) {
+                        var ratingClass = item.rating >= 80 ? 'high' : 'medium';
+                        $('#reliability-ratings').append(
+                            `<div class="rating-circle ${ratingClass}"><span>${item.rating}%</span></div>`
+                        );
+                    });
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error('Error fetching reliability ratings:', textStatus, errorThrown);
+                }
             });
-        },
-        error: function (error) {
-            console.error('Error fetching on-time performance data:', error);
-        }
-    });
-
-    // Fetch reliability ratings data
-    $.ajax({
-        type: 'GET',
-        url: '/api/reliability-ratings',
-        success: function (data) {
-            // Assuming data is an array of { airline: "Airline Name", rating: 90 }
-            // You would create rating visuals here
-            // For now, let's just append the data as text
-            data.forEach(function (item) {
-                $('#reliability-ratings').append(`<p>${item.airline}: ${item.rating}%</p>`);
-            });
-        },
-        error: function (error) {
-            console.error('Error fetching reliability ratings data:', error);
-        }
-    });
-});
-</script>
-
+        });
+    </script>
 </body>
 </html>
