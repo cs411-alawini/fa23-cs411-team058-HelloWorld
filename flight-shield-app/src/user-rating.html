@@ -160,7 +160,6 @@
             <a href="/about">ABOUT</a>
             <a href="/insight">INSIGHTS</a>
             <a href="/rating" style="color: #9c7351;"><b>USER RATING</b></a>
-            <input type="text" placeholder="Keyword Search">
         </nav>
     </header>
     <hr>
@@ -186,7 +185,13 @@
         </section>
         <br><br>
         <h3 style="text-align: center;  font-size:18 ; color:#704638;">Your Rating history</h3>
-
+        <div style="text-align: center;">
+            <form id="myForm">
+                <input type="text" id="textBox" placeholder="Keyword search">
+                <input type="button" value="Submit" onclick="submitForm()">
+            </form>
+        </div>
+        <br><br>
         <div id="rating-history-container">
             <p style="text-align: center; display: block;" id="noratingtext">No ratings submitted</p>
             <table id="dynamicTable" style="display: none; margin: 0px auto;">
@@ -197,7 +202,7 @@
                         <th>Options</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="myTableBody">
                     <!-- Table content will be dynamically added here -->
                 </tbody>
             </table>
@@ -418,6 +423,44 @@
                         console.error('Error:', error);
                     });
             }
+        }
+
+        function submitForm() {
+            var keyword = document.getElementById('textBox').value;
+            
+            // Handle empty input
+            if (keyword == "") {
+                // TODO: render full table
+                return;
+            }
+
+            const formData = { username };
+
+            const endpoint = '/search/' + keyword;
+
+            fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Database fetch failed');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+                    var tbody = document.getElementById("myTableBody");
+                    tbody.innerHTML = "";
+
+                    generateHistoryTable(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         }
 
     </script>

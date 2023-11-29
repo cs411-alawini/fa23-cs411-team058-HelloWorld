@@ -241,6 +241,20 @@ app.post('/update-rating', async (req, res) => {
       );
 });
 
+app.route('/search/:keyword')
+  .post( (req, res, next) => {
+    var keyword = "%" + req.params.keyword + "%";
+    console.log(req.params);
+    console.log(req.body);
+    connection.query(
+      "SELECT u.*, a.AIRLINE FROM user_ratings u JOIN airlines a ON u.IATA_CODE = a.IATA_CODE WHERE u.IATA_CODE IN (SELECT IATA_CODE FROM airlines WHERE AIRLINE LIKE ?) AND username = ?;", [keyword, req.body.username],
+      (error, results, fields) => {
+        if(error) throw error;
+        res.json(results);
+      }
+    );
+});
+
 // Listen to the App Engine-specified port, or 8080 otherwise
 const PORT = parseInt(process.env.PORT) || 8080;
 app.listen(PORT, () => {
