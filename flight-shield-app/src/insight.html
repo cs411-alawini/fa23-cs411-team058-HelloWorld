@@ -1,119 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FlightShield Insights</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-        
-        .rating-circle {
-            font-size: 32px; /* size of the circle */
-            border-radius: 50%;
-            width: 100px; /* size of the circle */
-            height: 100px; /* size of the circle */
-            line-height: 100px; /* center text vertically */
-            text-align: center;
-            margin: 10px auto;
-            position: relative;
-        }
-
-        .rating-circle:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%; 
-            height: 100%;
-            border-radius: 50%;
-            background: gray;
-            z-index: -1;
-        }
-
-        .rating-circle span {
-            display: block;
-            z-index: 10;
-        }
-
-        .high {
-            color: #ff6f31;
-        }
-        
-        .medium {
-            color: #ffd31d;
-        }
-
-        .high:before {
-            background: #ff6f31;
-        }
-        
-        .medium:before {
-            background: #ffd31d;
-        }
-        
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flight Statistics Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; }
+  .header { text-align: center; }
+  .container { display: flex; justify-content: space-around; padding: 20px; }
+  .chart-container { width: 40%; }
+  .chart, .reliability-ratings { width: 100%; text-align: center; }
+  .reliability-ratings div { margin-bottom: 20px; }
+  .percentage-circle { width: 100px; height: 100px; border-radius: 50%; border: 5px solid #333; display: flex; justify-content: center; align-items: center; margin: auto; }
+  .percentage-circle span { font-size: 2em; }
+  .green { border-color: #4CAF50; }
+  .red { border-color: #F44336; }
+  /* Additional styling here */
+</style>
 </head>
 <body>
-    <!-- Existing header with navigation -->
 
-    <main>
-        <!-- Static pie chart section -->
-        <section>
-            <h2>ON-TIME PERFORMANCE</h2>
-            <!-- Placeholder pie chart using inline SVG -->
-            <svg height="200" width="200" viewbox="0 0 32 32">
-                <circle r="16" cx="16" cy="16" fill="#8d6e63" />
-                <circle r="16" cx="16" cy="16" fill="#78909c" stroke-dasharray="20 100" stroke-dashoffset="25" />
-                <circle r="16" cx="16" cy="16" fill="#fff59d" stroke-dasharray="15 100" stroke-dashoffset="-15" />
-                
-            </svg>
-            <ul>
-                <li>JET BLUE - 38.5%</li>
-                <li>United Airlines - 23.1%</li>
-                <li>Delta Airlines - 15.4%</li>
-                <li>Southwest Airlines - 15.4%</li>
-                <li>American Airlines - 7.7%</li>
-            </ul>
-        </section>
+<div class="header">
+  <h1>FLIGHTSHIELD</h1>
+  <!-- Navigation and other header content -->
+</div>
 
-        <!-- Dynamic reliability ratings section -->
-        <section>
-            <h2>RELIABILITY RATINGS BASED ON YOUR SEARCH</h2>
-            <div id="reliability-ratings">
-                <!-- Placeholder for dynamic content -->
-                <!-- Example static content for layout  -->
-                <div class="rating-circle high"><span>90%</span></div>
-                <div class="rating-circle medium"><span>75%</span></div>
-                <p>SOUTHWEST AIRLINES</p>
-                <p>JET BLUE</p>
-            </div>
-        </section>
-    </main>
+<div class="container">
+  <div class="chart-container">
+    <h2>ON-TIME PERFORMANCE</h2>
+    <canvas id="onTimePerformanceChart" class="chart"></canvas>
+  </div>
+  <div class="reliability-ratings">
+    <h2>RELIABILITY RATINGS BASED ON YOUR SEARCH</h2>
+    <div>
+      <div class="percentage-circle green">
+        <span>90%</span>
+      </div>
+      <p>SOUTHWEST AIRLINES</p>
+    </div>
+    <div>
+      <div class="percentage-circle red">
+        <span>75%</span>
+      </div>
+      <p>JET BLUE</p>
+    </div>
+  </div>
+</div>
 
-    <script>
-        // Fetch reliability ratings from API
-        $(document).ready(function() {
-            $.ajax({
-                url: '/api/reliability-ratings',
-                method: 'GET',
-                success: function(data) {
-                    // Clear existing content
-                    $('#reliability-ratings').empty();
-                    
-                    // Add new content
-                    data.forEach(function(item) {
-                        var ratingClass = item.rating >= 80 ? 'high' : 'medium';
-                        $('#reliability-ratings').append(
-                            `<div class="rating-circle ${ratingClass}"><span>${item.rating}%</span></div>`
-                        );
-                    });
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.error('Error fetching reliability ratings:', textStatus, errorThrown);
-                }
-            });
-        });
-    </script>
+<script>
+  // Replace with the actual data
+  var onTimePerformanceData = {
+    labels: ['United Airlines', 'Southwest Airlines', 'Jet Blue', 'American Airlines', 'Delta Airlines'],
+    datasets: [{
+      data: [23.1, 15.6, 8.5, 7.7, 15.6],
+      backgroundColor: ['#8e5ea2', '#3cba9f', '#e8c3b9', '#c45850', '#3e95cd'],
+    }]
+  };
+
+  var ctx = document.getElementById('onTimePerformanceChart').getContext('2d');
+  var onTimePerformanceChart = new Chart(ctx, {
+    type: 'pie',
+    data: onTimePerformanceData,
+    options: {
+      responsive: true,
+      legend: {
+        position: 'bottom'
+      }
+    }
+  });
+
+  // Add your JavaScript code for the reliability ratings here
+</script>
+
 </body>
 </html>
