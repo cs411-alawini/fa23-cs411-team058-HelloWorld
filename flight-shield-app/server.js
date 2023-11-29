@@ -34,6 +34,24 @@ app.get('/homepage', (req, res) => {
     }
 });
 
+app.get('/about', (req, res) => {
+    if (!req.session.username) {
+        res.redirect("/login")
+    
+    } else {
+        res.sendFile(path.join(__dirname, '/src/about.html'));
+    }
+});
+
+app.get('/insight', (req, res) => {
+    if (!req.session.username) {
+        res.redirect("/login")
+    
+    } else {
+        res.sendFile(path.join(__dirname, '/src/insight.html'));
+    }
+});
+
 app.get('/rating', (req, res) => {
     if (!req.session.username) {
         res.redirect("/login")
@@ -127,13 +145,13 @@ app.get('/rating/:username', (req, res) => {
 });
 
 app.get('/airline-delays', async (req, res) => {
-    // does not have fieldcount etc in payload
+    // select indices [0][0], [2][0...4]
     connection.query(
-        "CALL GetAirlineDelays();",
+        "CALL GetAirlineDelays(); SELECT a.AIRLINE, AVG(d.DEPARTURE_DELAY) AS Avg_Delay FROM delays d JOIN airlines a ON d.AIRLINE = a.IATA_CODE GROUP BY a.AIRLINE ORDER BY Avg_Delay DESC LIMIT 5;",
         (error, results, fields) => {
           if(error) throw error;
-          console.log(results[0][0]);
-          res.json(results[0][0]);
+          console.log(results);
+          res.json(results);
         }
       );
 });

@@ -4,11 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Flight Statistics Dashboard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <style>
   body { font-family: Arial, sans-serif; }
   .header { text-align: center; }
-  .container { display: flex; justify-content: space-around; padding: 20px; }
+  .container { display: flex; justify-content: center; padding-left: 200px; }
   .chart-container { width: 40%; }
   .chart, .reliability-ratings { width: 100%; text-align: center; }
   .reliability-ratings div { margin-bottom: 20px; }
@@ -16,17 +18,184 @@
   .percentage-circle span { font-size: 2em; }
   .green { border-color: #4CAF50; }
   .red { border-color: #F44336; }
+  body {
+            font-family: sans-serif;
+            background-color:#f6f4f3;
+        }
+
+        header {
+            background-color: rgb(99, 58, 58);
+            color: #fff;
+        }
+
+
+        main {
+            padding: 20px;
+        }
+
+        section {
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color:#704638;
+        }
+
+        .flight-insurance-form {
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .input-container {
+            background-color: #d1c8c1;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 0 10px;
+        }
+
+        .flight-insurance-form input,
+        .flight-insurance-form button {}
+
+        .flight-insurance-form input {
+            border: none;
+            background: transparent;
+            margin-right: 80px;
+        }
+
+        .flight-insurance-form button {
+            background-color: #9c7351;
+            border: none;
+            border-radius: 15px;
+            padding: 10px 20px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .input-title {
+            font-size: 12px;
+            color: #333;
+            text-transform: uppercase;
+        }
+
+        .flight-schedule {
+            float: left;
+            width: 50%;
+        }
+
+        header {
+            background-color:#f6f4f3;
+            /* Replace with the actual color of your navbar */
+            padding: 10px 0;
+        }
+
+        nav {
+            display: inline-block;
+        }
+
+        nav #logo {
+            font-size: 24px;
+            /* Adjust the size as needed */
+            margin-right: 20px;
+            font-weight: bold;
+            display: inline;
+            margin-right: 20px;
+        }
+
+        nav a {
+            margin: 0 15px;
+            color: #000000;
+            /* Replace with the actual color of your links */
+            text-decoration: none;
+            font-size: 18px;
+            /* Adjust the size as needed */
+            position: relative;
+        }
+
+        /* Additional styles for the hover effect and other states if necessary */
+        nav a:hover {
+            color: #cccccc;
+            /* Replace with the color for hover state */
+        }
+
+
+:root {
+  --progress-bar-width: 200px;
+  --progress-bar-height: 200px;
+  --font-size: 2rem;
+}
+
+.circular-progress {
+  width: var(--progress-bar-width);
+  height: var(--progress-bar-height);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.inner-circle {
+  position: absolute;
+  width: calc(var(--progress-bar-width) - 30px);
+  height: calc(var(--progress-bar-height) - 30px);
+  border-radius: 50%;
+  background-color: lightgrey;
+}
+
+.percentage {
+  position: relative;
+  font-size: var(--font-size);
+  color: rgb(0, 0, 0, 0.8);
+}
   /* Additional styling here */
 </style>
 </head>
 <body>
 
 <div class="header">
-  <h1>FLIGHTSHIELD</h1>
-  <!-- Navigation and other header content -->
+    <header>
+        <nav>
+            <span style="padding-right: 350px; padding-left: 130px;">
+                <a href="/"><i class="fa fa-plane" style="font-size:34px; color:#2e2d2d; margin-left: 0px;margin-right: 10px;"></i></a><div id="logo" style="color:#704638; left: 0; font-size: 24px; ">FLIGHTSHIELD</div>
+            </span>
+            <a href="/homepage"><b>HOME</b></a>
+            <a href="/about">ABOUT</a>
+            <a href="/insight" style="color: #9c7351;" >INSIGHTS</a>
+            <a href="/rating">USER RATING</a>
+            <input type="text" placeholder="Keyword Search">
+        </nav>
+    </header>
+    <hr>
 </div>
 
-<div class="container">
+<section id="flight-insurance">
+    <br>
+
+    <!-- TODO: change wording -->
+    <h2 style="text-align: center;  font-size:18 ; color:#704638;">OPTIMIZE YOUR TRAVEL</h2>
+    <br>
+    <div class="flight-insurance-form">
+        <div class="input-container">
+            <div class="input-title" style="font-size:medium;"><b>Origin</b></div>
+            <input type="text" id="origin" name="origin" placeholder="ORIGIN">
+        </div>
+        <div class="input-container">
+            <div class="input-title" style="font-size: medium;"><b>Destination</b></div>
+            <input type="text" id="destination" name="destination" placeholder="DESTINATION">
+        </div>
+        <div class="input-container">
+            <div class="input-title" style="font-size: medium;"><b>Depart</b></div>
+            <input type="text" id="date" name="date" placeholder="DEPART">
+        </div>
+        <button id="predict" onclick="onSubmitClick()"
+            style="margin: 10px; padding: 18px; font-size: medium;">SUBMIT</button>
+    </div>
+</section>
+<br><br>
+
+<div class="container" id="container" style="display: none">
   <div class="chart-container">
     <h2>ON-TIME PERFORMANCE</h2>
     <canvas id="onTimePerformanceChart" class="chart"></canvas>
@@ -34,41 +203,170 @@
   <div class="reliability-ratings">
     <h2>RELIABILITY RATINGS BASED ON YOUR SEARCH</h2>
     <div>
-      <div class="percentage-circle green">
+      <!-- <div class="percentage-circle green">
         <span>90%</span>
+      </div> -->
+      <div class="circular-progress progress-1" data-inner-circle-color="lightgrey" data-percentage="90" data-progress-color="crimson" data-bg-color="black">
+        <div class="inner-circle"></div>
+        <p class="percentage">0%</p>
       </div>
-      <p>SOUTHWEST AIRLINES</p>
+      <p id="airline1"></p>
     </div>
     <div>
-      <div class="percentage-circle red">
+      <!-- <div class="percentage-circle red">
         <span>75%</span>
+      </div> -->
+      <div class="circular-progress progress-2" data-inner-circle-color="lightgrey" data-percentage="75" data-progress-color="crimson" data-bg-color="black">
+        <div class="inner-circle"></div>
+        <p class="percentage">0%</p>
       </div>
-      <p>JET BLUE</p>
+      <p id="airline2"></p>
     </div>
   </div>
 </div>
 
 <script>
-  // Replace with the actual data
-  var onTimePerformanceData = {
-    labels: ['United Airlines', 'Southwest Airlines', 'Jet Blue', 'American Airlines', 'Delta Airlines'],
-    datasets: [{
-      data: [23.1, 15.6, 8.5, 7.7, 15.6],
-      backgroundColor: ['#8e5ea2', '#3cba9f', '#e8c3b9', '#c45850', '#3e95cd'],
-    }]
-  };
 
-  var ctx = document.getElementById('onTimePerformanceChart').getContext('2d');
-  var onTimePerformanceChart = new Chart(ctx, {
-    type: 'pie',
-    data: onTimePerformanceData,
-    options: {
-      responsive: true,
-      legend: {
-        position: 'bottom'
-      }
+    function loadProgressCircles(p1, p2) {
+        var val1 = p1;
+        var val2 = p2;
+
+        // Select all elements with the class name 'progress-1'
+        const circle1 = document.querySelector('.progress-1');
+        // Select the percentage element inside the first circle
+        const percentageElement1 = circle1.querySelector('.percentage');
+        // Set the data-percentage attribute for the first circle
+        circle1.setAttribute('data-percentage', val1);
+        // Set the initial text content for the first circle
+        percentageElement1.textContent = `0%`;
+
+        // Select all elements with the class name 'progress-2'
+        const circle2 = document.querySelector('.progress-2');
+        // Select the percentage element inside the second circle
+        const percentageElement2 = circle2.querySelector('.percentage');
+        // Set the data-percentage attribute for the second circle
+        circle2.setAttribute('data-percentage', val2);
+        // Set the initial text content for the second circle
+        percentageElement2.textContent = `0%`;
+
+        // Function to animate the progress for a given circle
+        function animateProgress(circle, endPercentage) {
+        const progressValue = circle.querySelector('.percentage');
+        const innerCircle = circle.querySelector('.inner-circle');
+        let startValue = 0,
+            speed = 50,
+            progressColor = circle.getAttribute('data-progress-color');
+
+        const progress = setInterval(() => {
+            startValue++;
+            progressValue.textContent = `${startValue}%`;
+            progressValue.style.color = `${progressColor}`;
+
+            innerCircle.style.backgroundColor = `${circle.getAttribute(
+            'data-inner-circle-color'
+            )}`;
+
+            circle.style.background = `conic-gradient(${progressColor} ${
+            startValue * 3.6
+            }deg,${circle.getAttribute('data-bg-color')} 0deg)`;
+
+            if (startValue === endPercentage) {
+            clearInterval(progress);
+            }
+        }, speed);
+        }
+
+        // Start the animation for each circle
+        animateProgress(circle1, parseInt(circle1.getAttribute('data-percentage')));
+        animateProgress(circle2, parseInt(circle2.getAttribute('data-percentage')));
     }
-  });
+
+    async function loadPieChart() {
+        var angles = [];
+        var airlines = [];
+
+        await fetch('/airline-delays')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const inputString = data[0][0].PieChartAnglesArray;
+            angles = inputString.split(',').map(Number);
+
+            data[2].forEach(element => {
+                airlines.push(element.AIRLINE);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+
+        // Replace with the actual data
+        var onTimePerformanceData = {
+            labels: airlines,
+            datasets: [{
+            data: angles,
+            backgroundColor: ['#8e5ea2', '#3cba9f', '#e8c3b9', '#c45850', '#3e95cd'],
+            }]
+        };
+
+        var ctx = document.getElementById('onTimePerformanceChart').getContext('2d');
+        var onTimePerformanceChart = new Chart(ctx, {
+            type: 'pie',
+            data: onTimePerformanceData,
+            options: {
+            responsive: true,
+            legend: {
+                position: 'bottom'
+            }
+            }
+        });
+    }
+
+    function onSubmitClick() {
+        const origin = document.getElementById('origin').value;
+        const destination = document.getElementById('destination').value;
+        const date = document.getElementById('date').value;
+        
+        // Handle empty input
+        if (origin == "" || destination == "" || date == "") {
+            return;
+        }
+
+        const formData = { origin, destination, date };
+        console.log(formData);
+
+        // You should replace the following URL with your actual authentication endpoint
+        const endpoint = '/top-rated-airlines';
+
+        fetch(endpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Database fetch failed');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('airline1').innerHTML = data[1][0]["@airline_name1"];
+                document.getElementById('airline2').innerHTML = data[2][0]["@airline_name2"];
+                document.getElementById('container').style.display = "flex";
+
+                loadProgressCircles(data[1][0]["@rating_val1"], data[2][0]["@rating_val2"]);
+                loadPieChart();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
 
   // Add your JavaScript code for the reliability ratings here
 </script>
