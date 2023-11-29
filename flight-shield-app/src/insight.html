@@ -37,7 +37,7 @@
             margin-bottom: 20px;
         }
 
-        h2 {
+        h3 {
             font-size: 22px;
             margin-bottom: 10px;
             color:#704638;
@@ -135,13 +135,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-left: 40%;
 }
 .inner-circle {
   position: absolute;
   width: calc(var(--progress-bar-width) - 30px);
   height: calc(var(--progress-bar-height) - 30px);
   border-radius: 50%;
-  background-color: lightgrey;
+  margin-top:20px;
+  background-color: #f0eee2;
 }
 
 .percentage {
@@ -160,9 +162,9 @@
             <span style="padding-right: 350px; padding-left: 130px;">
                 <a href="/"><i class="fa fa-plane" style="font-size:34px; color:#2e2d2d; margin-left: 0px;margin-right: 10px;"></i></a><div id="logo" style="color:#704638; left: 0; font-size: 24px; ">FLIGHTSHIELD</div>
             </span>
-            <a href="/homepage"><b>HOME</b></a>
+            <a href="/homepage">HOME</a>
             <a href="/about">ABOUT</a>
-            <a href="/insight" style="color: #9c7351;" >INSIGHTS</a>
+            <a href="/insight" style="color: #9c7351;" ><b>INSIGHTS</b></a>
             <a href="/rating">USER RATING</a>
             <input type="text" placeholder="Keyword Search">
         </nav>
@@ -174,8 +176,9 @@
     <br>
 
     <!-- TODO: change wording -->
-    <h2 style="text-align: center;  font-size:18 ; color:#704638;">OPTIMIZE YOUR TRAVEL</h2>
-    <br>
+    <h2 style="text-align: center;  font-size:18 ; color:#704638;">OPTIMIZE YOUR TRAVEL MONEY HERE</h2>
+    <h3 style="text-align: center;  font-size:18 ; color:#9c7351;">Select An Airline That Has The Best On-Time Performance Based On Our Analysis!</h3>
+    <br><br>
     <div class="flight-insurance-form">
         <div class="input-container">
             <div class="input-title" style="font-size:medium;"><b>Origin</b></div>
@@ -194,19 +197,19 @@
     </div>
 </section>
 <br><br>
-
+<!-- add style="display: none" -->
 <div class="container" id="container" style="display: none">
   <div class="chart-container">
-    <h2>ON-TIME PERFORMANCE</h2>
+    <h3>Best On-Time Performance</h3>
     <canvas id="onTimePerformanceChart" class="chart"></canvas>
   </div>
   <div class="reliability-ratings">
-    <h2>RELIABILITY RATINGS BASED ON YOUR SEARCH</h2>
+    <h3>Reliability Ratings Based On Your Search</h3>
     <div>
       <!-- <div class="percentage-circle green">
         <span>90%</span>
       </div> -->
-      <div class="circular-progress progress-1" data-inner-circle-color="lightgrey" data-percentage="90" data-progress-color="crimson" data-bg-color="black">
+      <div class="circular-progress progress-1" data-inner-circle-color="lightgrey" data-percentage="90" data-progress-color="#f36c62" data-bg-color="black">
         <div class="inner-circle"></div>
         <p class="percentage">0%</p>
       </div>
@@ -216,7 +219,7 @@
       <!-- <div class="percentage-circle red">
         <span>75%</span>
       </div> -->
-      <div class="circular-progress progress-2" data-inner-circle-color="lightgrey" data-percentage="75" data-progress-color="crimson" data-bg-color="black">
+      <div class="circular-progress progress-2" data-inner-circle-color="lightgrey" data-percentage="75" data-progress-color="#f36c62" data-bg-color="black">
         <div class="inner-circle"></div>
         <p class="percentage">0%</p>
       </div>
@@ -309,7 +312,7 @@
             labels: airlines,
             datasets: [{
             data: angles,
-            backgroundColor: ['#8e5ea2', '#3cba9f', '#e8c3b9', '#c45850', '#3e95cd'],
+            backgroundColor: ['#27140e', '#704638', '#b08b7e', '#dcbeb4', '#f1dfdb'],
             }]
         };
 
