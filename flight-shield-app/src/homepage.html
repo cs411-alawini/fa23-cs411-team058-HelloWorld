@@ -244,11 +244,12 @@
             <div class="flight-insurance-form">
                 <div class="input-container">
                     <div class="input-title" style="font-size:medium;"><b>Origin</b></div>
-                    <input type="text" id="origin" name="origin" placeholder="ORIGIN">
+                    <input list="airports" id="origin" name="origin" placeholder="ORIGIN">
                 </div>
+                <datalist id="airports"></datalist>
                 <div class="input-container">
                     <div class="input-title" style="font-size: medium;"><b>Destination</b></div>
-                    <input type="text" id="destination" name="destination" placeholder="DESTINATION">
+                    <input list="airports" id="destination" name="destination" placeholder="DESTINATION">
                 </div>
                 <div class="input-container">
                     <div class="input-title" style="font-size: medium;"><b>Depart</b></div>
@@ -281,6 +282,29 @@
 
 
     <script>
+        fetch('/airports')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                data.forEach(element => {
+                    addOption(element.IATA_CODE);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+
+        function addOption(value) {
+            var datalist = document.getElementById('airports');
+            var option = document.createElement('option');
+            option.value = value;
+            datalist.appendChild(option);
+        }
+
         function onPredictClick() {
             const origin = document.getElementById('origin').value;
             const destination = document.getElementById('destination').value;

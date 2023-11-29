@@ -15,6 +15,7 @@ app.use(session({
 	resave: true,
 	saveUninitialized: true
 }));
+app.use(express.static('static'));
 
 app.get('/', (req, res) => {
     if (!req.session.username) {
@@ -127,6 +128,16 @@ app.route('/airlines/:id')
   .get( (req, res, next) => {
     connection.query(
       "SELECT * FROM `airlines` WHERE IATA_CODE = ?;", req.params.id,
+      (error, results, fields) => {
+        if(error) throw error;
+        res.json(results);
+      }
+    );
+});
+
+app.get('/airports', (req, res) => {
+    connection.query(
+      "SELECT * FROM `airports` WHERE AIRPORT <> 'NA';",
       (error, results, fields) => {
         if(error) throw error;
         res.json(results);
