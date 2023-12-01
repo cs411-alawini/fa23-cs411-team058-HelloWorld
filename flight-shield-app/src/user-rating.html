@@ -186,10 +186,8 @@
         <br><br>
         <h3 style="text-align: center;  font-size:18 ; color:#704638;">Your Rating history</h3>
         <div style="text-align: center;">
-            <form id="myForm">
-                <input type="text" id="textBox" placeholder="Keyword search">
-                <input type="button" value="Submit" onclick="submitForm()">
-            </form>
+            <input type="text" id="textBox" placeholder="Keyword search">
+            <input type="button" id="keywordsearchsubmit" value="Submit" onclick="submitForm()">
         </div>
         <br><br>
         <div id="rating-history-container">
@@ -213,6 +211,7 @@
         var username = "";
         var airlinesWithRatings = [];
         var iata_map = {};
+        var userRatings = [];
         
         $(document).ready(async function () {
             // Fetch airlines list
@@ -264,6 +263,8 @@
                                 $("#dynamicTable").css('display', 'table');
                                 $("#noratingtext").css('display', 'none');
 
+                                userRatings.push(data);
+                                
                                 data.forEach(element => {
                                     airlinesWithRatings.push(element.IATA_CODE); 
                                 }); // Store airlines that already have an associated rating so that we can avoid displaying it in the select
@@ -275,8 +276,6 @@
                             var selectElement = document.getElementById("dynamicSelect");
                             selectElement.innerHTML = "";
                             
-                            console.log(iata_map);
-
                             // Dynamic Select display logic goes here
                             Object.keys(iata_map).forEach(element => {
                                 if (!airlinesWithRatings.includes(element)) {
@@ -296,6 +295,13 @@
                 .catch(error => {
                     console.error('Error fetching data:', error);
                 });
+
+
+            document.querySelector("#textBox").addEventListener("keyup", event => {
+                if(event.key !== "Enter") return; // Use `.key` instead.
+                document.querySelector("#keywordsearchsubmit").click(); // Things you want to do.
+                event.preventDefault(); // No need to `return false;`.
+            });
         });
 
         function onSubmit() {
@@ -326,7 +332,6 @@
                     return response.json();
                 })
                 .then(data => {
-                    console.log(data);
                     window.location.href = "/rating"; // Refresh
                 })
                 .catch(error => {
@@ -359,14 +364,11 @@
 
         function editRating(iata_code, oldRating) {
             let newRating = parseInt(prompt("Please enter the modified rating value:", oldRating), 10);
-            console.log(newRating);
 
             if (newRating == null || isNaN(newRating) || newRating > 10 || newRating < 0) {
                 alert("Invalid input! Please enter a number between 0-10");
 
             } else {
-                console.log(newRating);
-
                 rating = newRating;
 
                 const formData = { username, iata_code, rating };
@@ -387,7 +389,6 @@
                         return response.json();
                     })
                     .then(data => {
-                        console.log(data);
                         window.location.href = "/rating"; // Refresh
                     })
                     .catch(error => {
@@ -416,7 +417,6 @@
                         return response.json();
                     })
                     .then(data => {
-                        console.log(data);
                         window.location.href = "/rating"; // Refresh
                     })
                     .catch(error => {
@@ -430,7 +430,8 @@
             
             // Handle empty input
             if (keyword == "") {
-                // TODO: render full table
+                // No clue why i have to specifically select index 0, but this is what works so idk
+                generateHistoryTable(userRatings[0]);
                 return;
             }
 
@@ -452,7 +453,6 @@
                     return response.json();
                 })
                 .then(data => {
-                    console.log(data);
                     var tbody = document.getElementById("myTableBody");
                     tbody.innerHTML = "";
 
