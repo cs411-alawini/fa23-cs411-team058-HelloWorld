@@ -255,7 +255,7 @@
             datalist.appendChild(option);
         }
         
-    function loadProgressCircles(p1, p2) {
+    function loadProgressCircles(p1, p2, name1, name2) {
         var val1 = p1;
         var val2 = p2;
 
@@ -305,8 +305,22 @@
         }
 
         // Start the animation for each circle
-        animateProgress(circle1, parseInt(circle1.getAttribute('data-percentage')));
-        animateProgress(circle2, parseInt(circle2.getAttribute('data-percentage')));
+        if (p1 != null) {
+            circle1.style.display = "flex";
+            animateProgress(circle1, parseInt(circle1.getAttribute('data-percentage')));
+        
+        } else {
+            circle1.style.display = "none";
+        }
+
+        if (p2 != null) {
+            circle2.style.display = "flex";
+            animateProgress(circle2, parseInt(circle2.getAttribute('data-percentage')));
+       
+        } else {
+            circle2.style.display = "none";
+        }
+
     }
 
     async function loadPieChart() {
@@ -365,7 +379,6 @@
         }
 
         const formData = { origin, destination, date };
-        console.log(formData);
 
         // You should replace the following URL with your actual authentication endpoint
         const endpoint = '/top-rated-airlines';
@@ -388,7 +401,7 @@
                 document.getElementById('airline2').innerHTML = data[2][0]["@airline_name2"];
                 document.getElementById('container').style.display = "flex";
 
-                loadProgressCircles(data[1][0]["@rating_val1"], data[2][0]["@rating_val2"]);
+                loadProgressCircles(data[1][0]["@rating_val1"], data[2][0]["@rating_val2"], data[1][0]["@airline_name1"], data[2][0]["@airline_name2"]);
                 loadPieChart();
             })
             .catch(error => {
