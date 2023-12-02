@@ -120,6 +120,18 @@
             color: #cccccc;
             /* Replace with the color for hover state */
         }
+        
+        .error-container {
+            background-color: #ffdddd;
+            border: 1px solid #ff9999;
+            color: #990000;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+            margin: auto; /* Center horizontally */
+        }
 
 
 :root {
@@ -195,38 +207,44 @@
             style="margin: 10px; padding: 18px; font-size: medium;">SUBMIT</button>
     </div>
 </section>
-<br><br>
+<br>
+<br>
 <!-- add style="display: none" -->
 <div class="container" id="container" style="display: none">
   <div class="chart-container">
-    <h3>Best On-Time Performance</h3>
-    <canvas id="onTimePerformanceChart" class="chart"></canvas>
+    <h3 id="chart-text">Best On-Time Performance</h3>
+    <canvas id="onTimePerformanceChart" class="chart" width="400px" height="400px"></canvas>
   </div>
   <div class="reliability-ratings">
     <h3>Reliability Ratings Based On Your Search</h3>
-    <div style="padding-left: 50%; margin-left: -100px; text-align: left;">
-      <!-- <div class="percentage-circle green">
-        <span>90%</span>
-      </div> -->
-      <div class="circular-progress progress-1" data-inner-circle-color="lightgrey" data-percentage="90" data-progress-color="#f36c62" data-bg-color="black">
-        <div class="inner-circle"></div>
-        <p class="percentage">0%</p>
-      </div>
-      <div style="width: 200px; text-align: center;">
-        <p id="airline1"></p>
-      </div>
+    <div class="error-container" style="display: none;">
+        <strong>Error:</strong> No flights found matching route.
     </div>
-    <div style="padding-left: 50%; margin-left: -100px; text-align: left;">
-      <!-- <div class="percentage-circle red">
-        <span>75%</span>
-      </div> -->
-      <div class="circular-progress progress-2" data-inner-circle-color="lightgrey" data-percentage="75" data-progress-color="#f36c62" data-bg-color="black">
-        <div class="inner-circle"></div>
-        <p class="percentage">0%</p>
-      </div>
-      <div style="width: 200px; text-align: center;">
-        <p id="airline2"></p>
-      </div>
+    <div id="reliability-progress-container" style="display: none;">
+        <div style="padding-left: 50%; margin-left: -100px; text-align: left;">
+            <!-- <div class="percentage-circle green">
+              <span>90%</span>
+            </div> -->
+            <div class="circular-progress progress-1" data-inner-circle-color="lightgrey" data-percentage="90" data-progress-color="#f36c62" data-bg-color="black">
+              <div class="inner-circle"></div>
+              <p class="percentage">0%</p>
+            </div>
+            <div style="width: 200px; text-align: center;">
+              <p id="airline1"></p>
+            </div>
+          </div>
+          <div style="padding-left: 50%; margin-left: -100px; text-align: left;">
+            <!-- <div class="percentage-circle red">
+              <span>75%</span>
+            </div> -->
+            <div class="circular-progress progress-2" data-inner-circle-color="lightgrey" data-percentage="75" data-progress-color="#f36c62" data-bg-color="black">
+              <div class="inner-circle"></div>
+              <p class="percentage">0%</p>
+            </div>
+            <div style="width: 200px; text-align: center;">
+              <p id="airline2"></p>
+            </div>
+          </div>
     </div>
   </div>
 </div>
@@ -397,12 +415,22 @@
                 return response.json();
             })
             .then(data => {
-                document.getElementById('airline1').innerHTML = data[1][0]["@airline_name1"];
-                document.getElementById('airline2').innerHTML = data[2][0]["@airline_name2"];
+                console.log(data)
                 document.getElementById('container').style.display = "flex";
-
-                loadProgressCircles(data[1][0]["@rating_val1"], data[2][0]["@rating_val2"], data[1][0]["@airline_name1"], data[2][0]["@airline_name2"]);
                 loadPieChart();
+
+                if (data[1][0]["@airline_name1"] == null && data[2][0]["@airline_name2"] == null) {
+                    document.getElementsByClassName('error-container')[0].style.display = "block";
+                    document.getElementById('reliability-progress-container').style.display = "none";
+               
+                } else {
+                    document.getElementsByClassName('error-container')[0].style.display = "none";
+                    document.getElementById('reliability-progress-container').style.display = "block";
+                    document.getElementById('airline1').innerHTML = data[1][0]["@airline_name1"];
+                    document.getElementById('airline2').innerHTML = data[2][0]["@airline_name2"];
+
+                    loadProgressCircles(data[1][0]["@rating_val1"], data[2][0]["@rating_val2"], data[1][0]["@airline_name1"], data[2][0]["@airline_name2"]);
+                }
             })
             .catch(error => {
                 console.error('Error:', error);

@@ -213,6 +213,19 @@
             color: #cccccc;
             /* Replace with the color for hover state */
         }
+
+        .error-container {
+            background-color: #ffdddd;
+            border: 1px solid #ff9999;
+            color: #990000;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+            margin: auto; /* Center horizontally */
+        }
+
     </style>
 </head>
 
@@ -258,7 +271,11 @@
                     style="margin: 10px; padding: 18px; font-size: medium;">PREDICT</button>
             </div>
         </section>
-        <br><br>
+        <br>
+        <div class="error-container" style="display: none;">
+            <strong>Error:</strong> No flights found matching route.
+        </div>
+        <br>
         <div class="risk-meter-container">
             <h2 style="text-align: center;  font-size:18 ; color:#704638;">Flight Schedule Risk Meter</h2>
             <br><br>
@@ -272,6 +289,11 @@
                     <li id="L6">L6</li>
                     <li id="L7">L7</li>
                 </ol>
+            </div>
+            <div style="text-align: center; justify-content: space-between; display: flex;">
+                <p>Low</p>
+                <p>Medium</p>
+                <p>High</p>
             </div>
         </div>
         <br>
@@ -335,24 +357,33 @@
                 })
                 .then(data => {
                     console.log(data);
+                    console.log(data[0][0].Avg_Delay);
 
-                    // Update the risk meter and display the results
+                    if (data[0][0].Avg_Delay == null) {
+                        document.getElementsByClassName('error-container')[0].style.display = "block";
+                    
+                    } else {
+                        console.log("else statement")
+                        document.getElementsByClassName('error-container')[0].style.display = "none";
+
+                        // Update the risk meter and display the results
                     // const riskmeterdiv = document.getElementById('risk-meter-div');
                     // riskmeterdiv.innerHTML = JSON.stringify(data[0]);
 
-                    const riskMeterLevel = data[0][0].Risk_Level
-                    document.getElementById('L1').classList.remove('isActive');
-                    document.getElementById('L2').classList.remove('isActive');
-                    document.getElementById('L3').classList.remove('isActive');
-                    document.getElementById('L4').classList.remove('isActive');
-                    document.getElementById('L5').classList.remove('isActive');
-                    document.getElementById('L6').classList.remove('isActive');
-                    document.getElementById('L7').classList.remove('isActive');
+                        const riskMeterLevel = data[0][0].Risk_Level
+                        document.getElementById('L1').classList.remove('isActive');
+                        document.getElementById('L2').classList.remove('isActive');
+                        document.getElementById('L3').classList.remove('isActive');
+                        document.getElementById('L4').classList.remove('isActive');
+                        document.getElementById('L5').classList.remove('isActive');
+                        document.getElementById('L6').classList.remove('isActive');
+                        document.getElementById('L7').classList.remove('isActive');
 
-                    console.log(riskMeterLevel);
+                        console.log(riskMeterLevel);
 
-                    var listItem = document.getElementById(riskMeterLevel);
-                    listItem.classList.add('isActive');
+                        var listItem = document.getElementById(riskMeterLevel);
+                        listItem.classList.add('isActive');
+                    }
                 })
                 .catch(error => {
                     console.error('Error:', error);
