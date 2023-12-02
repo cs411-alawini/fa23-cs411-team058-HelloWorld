@@ -396,6 +396,13 @@
             return;
         }
 
+        var dateFormat = /^(0?[1-9]|[12][0-9]|3[01])-(Jan|Feb|Mar)$/i;
+
+        if (!date.match(dateFormat)) {
+            alert("Please follow date format (e.g. 1-Jan, 19-Feb, 3-Mar)")
+            return;
+        }
+
         const formData = { origin, destination, date };
 
         // You should replace the following URL with your actual authentication endpoint
