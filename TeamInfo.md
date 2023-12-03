@@ -20,7 +20,7 @@
 |   Info      |        Description     |
 | ----------- | ---------------------- |
 |  Title      |       FlightShield     |
-| System URL  |      link_to_system    |
+| System URL  |      [Link](https://cs411-team058-helloworld.uc.r.appspot.com)|
 | Video Link  |      link_to_video     |
 
 ## Project Summary
