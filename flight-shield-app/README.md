@@ -1,5 +1,16 @@
 # flight-shield-app
 
+## Folder Structure
+```
+.
+└── flight-shield-app/
+    ├── python_scripts # Scripts used to impute data and generate insert queries
+    ├── src            # HTML code for our app
+    ├── sql            # Stored procedures + Triggers SQL queries
+    └── static         # Images etc.
+```
+### Link to [citations](citations.md)
+
 ## Setup
 We have setup our project by following [this tutorial](https://billmartin.io/blog/how-to-build-and-deploy-a-nodejs-api-on-google-cloud)
 
