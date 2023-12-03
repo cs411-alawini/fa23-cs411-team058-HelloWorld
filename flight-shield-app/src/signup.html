@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .signup-container {
+            max-width: 300px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .signup-container h2 {
+            margin-bottom: 20px;
+            color: #333333;
+        }
+
+        .signup-container input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        .signup-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4caf50;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .signup-container button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <h2>Sign Up</h2>
+        <form id="signupForm">
+            <input type="text" id="username" name="username" placeholder="Username" required>
+            <br>
+            <input type="password" id="password" name="password" placeholder="Password" required>
+            <br>
+            <button type="button" onclick="handleSignUp()">Sign Up</button>
+        </form>
+    </div>
+
+    <script>
+        function handleSignUp() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Your signup logic here
+            const signupData = { username, password };
+
+            console.log(signupData);
+
+            const endpoint = '/signup';
+            
+            try {
+                fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(signupData),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Handle successful signup, e.g., show a success message
+                    const successMessage = `User "${username}" signed up successfully!`;
+                    alert(successMessage);
+
+                    // Redirect the user to the login page
+                    window.location.href = '/';
+                })
+                .catch(error => {
+                    // Handle fetch or parsing errors
+                    console.error('Signup error:', error);
+                });
+            } catch (error) {
+                // Handle other synchronous errors
+                console.error('Error:', error);
+            }
+        }
+    </script>
+
+</body>
+</html>
